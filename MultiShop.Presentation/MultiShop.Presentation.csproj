@@ -17,4 +17,8 @@
     <ProjectReference Include="..\MultiShop.Data\MultiShop.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\DumyData\" />
+  </ItemGroup>
+
 </Project>

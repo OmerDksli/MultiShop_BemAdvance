@@ -81,8 +81,13 @@ using (var scope = app.Services.CreateScope())
         var categories = context.Categories.Include(c => c.Products).ThenInclude(ima => ima.ProductImages).Include(c => c.Products).ThenInclude(rat => rat.ProductRatings).ToList();
         string categoriesJson = JsonConvert.SerializeObject(categories, Formatting.Indented, settings);
 
-        string pathproducts = Path.Combine(env.WebRootPath, "categorieswithinclude.json");//dosya yolunu alýr
-        File.AppendAllText(pathproducts, categoriesJson);
+        string pathcategories = Path.Combine(env.WebRootPath, @"DumyData\categorieswithinclude.json");//dosya yolunu alýr
+        File.AppendAllText(pathcategories, categoriesJson);
+
+        var sliders=context.Sliders.ToList();
+        var slidersJson= JsonConvert.SerializeObject(sliders, Formatting.Indented, settings);
+        string pathsliders= Path.Combine(env.WebRootPath, @"DumyData\sliders.json");
+        File.AppendAllText(pathsliders, slidersJson);
 
     }
 
