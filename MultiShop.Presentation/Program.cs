@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using MultiShop.Business.Interfaces;
 using MultiShop.Data;
 using MultiShop.Repository;
+using Newtonsoft.Json;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 var builder = WebApplication.CreateBuilder(args);//web uygulamasý oluþturulur 
 
@@ -60,5 +62,33 @@ app.UseStaticFiles();//3
 //? optional
 
 app.UseSession();
+
+#region database data convert to json file
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<MultiShopDbContext>();
+    //var deneme=context.Products.ToList();
+    if (context.Categories.Any())
+    {
+        // IWebHostEnvironment servisini al
+        var env = services.GetRequiredService<IWebHostEnvironment>();
+
+        var settings = new JsonSerializerSettings
+        {
+            ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+        };
+        var categories = context.Categories.Include(c => c.Products).ThenInclude(ima => ima.ProductImages).Include(c => c.Products).ThenInclude(rat => rat.ProductRatings).ToList();
+        string categoriesJson = JsonConvert.SerializeObject(categories, Formatting.Indented, settings);
+
+        string pathproducts = Path.Combine(env.WebRootPath, "categorieswithinclude.json");//dosya yolunu alýr
+        File.AppendAllText(pathproducts, categoriesJson);
+
+    }
+
+} 
+#endregion
+
+
 
 app.Run();

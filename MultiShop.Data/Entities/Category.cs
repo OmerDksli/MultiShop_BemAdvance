@@ -1,4 +1,6 @@
-﻿namespace MultiShop.Data
+﻿using System.Text.Json.Serialization;
+
+namespace MultiShop.Data
 {
     public class Category : BaseEntity, IOrdered, IImage
     {

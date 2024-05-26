@@ -1,4 +1,6 @@
-﻿namespace MultiShop.Data
+﻿using System.Text.Json.Serialization;
+
+namespace MultiShop.Data
 {
     public class Product : BaseEntity, IOrdered, IImage
     {
@@ -11,6 +13,7 @@
         public string? Image { get; set; }
         public string? Description { get; set; }
         public int CategoryID { get; set; }
+        
         public Category Category { get; set; }//Navigation property
         public ICollection<ProductRating> ProductRatings { get; set; }
         public ICollection<ProductImage> ProductImages { get; set; }
